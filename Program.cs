@@ -12,22 +12,31 @@ namespace Math_Quiz
 {
     internal class Program
     {
-
-
-        public int test(string fname,string lname, string room,int length)
+        public class Student
         {
-            FileStream fs = new FileStream("C:\\Users\\AQ232596\\source\\repos\\Math Quiz\\Scores.txt", FileMode.Append, FileAccess.Write);
-            StreamWriter sw = new StreamWriter(Scores);
+            public string FirstName;
+            public string LastName;
+            public int Score;
+            public DateTime Date;
+
+        }
+
+        static public void Quiz(string fname,string lname, string room,int length)
+        {
+            FileStream fs = new FileStream("C:\\Users\\paulj\\source\\repos\\Math-Quiz\\Scores.txt", FileMode.Append, FileAccess.Write);
+            StreamWriter sw = new StreamWriter(fs);
+
+            Student student = new Student();
 
             int total = 0;
-            for (int i = 1; i == length; i++)
+            for (int i = 1; i <= length; i++)
             {
                 string[] operators = { "+", "-", "*" };
                 Random rand = new Random();
                 int roperator = rand.Next(operators.Length);
-                int num1 = rand.Next(0,10);
-                int num2 = rand.Next(0,10);
-                Console.WriteLine($"{num1} {roperator} {num2}");
+                int num1 = rand.Next(1,10);
+                int num2 = rand.Next(1,10);
+                Console.Write($"Q{i}. {num1} {operators[roperator]} {num2} -> ");
                 int answer = 0; 
                 switch(roperator)
                 {
@@ -41,87 +50,111 @@ namespace Math_Quiz
                         answer = num1 * num2;
                         break;
                 }
-                int input = int.Parse(Console.ReadLine());
-                if (answer == input)
+                int input = 0;
+                int timeout = 4;
+                bool accepted = true;
+                int attempts = 0;
+                bool TO = false;
+                do
                 {
-                    total++;
-                }
+                    attempts++;
+                    try
+                    {
+                        accepted = true;
+                        input = int.Parse(Console.ReadLine());
+                    }
+                    catch 
+                    {
+                        accepted = false;
+                        Console.BackgroundColor = ConsoleColor.Red;
+                        Console.Write("Value needs to be of intiger value -> ");
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        if (attempts == timeout)
+                        {
+                            TO = true;
+                        }
+                    }
+                }while (accepted == false && TO == false);
 
+                if (TO == true)
+                {
+                    Console.BackgroundColor = ConsoleColor.Red;
+                    Console.WriteLine("failed to enter correct input");
+                    Console.BackgroundColor = ConsoleColor.Black;
+                }
+                else
+                {
+                    if (answer == input)
+                    {
+                        total++;
+                    }
+                }
             }
-            return total;
+
+            student.Date = DateTime.Now.Date;
+            student.FirstName = fname; 
+            student.LastName = lname; 
+            student.Score = total;
+            Console.WriteLine($"{student.FirstName},{student.LastName},{student.Score}/{length},{student.Date}");
+            sw.WriteLine($"{student.FirstName},{student.LastName},{student.Score},{student.Date}");
+            sw.Close();
+            fs.Close();
+            Console.ReadKey();
         }
         static void Main(string[] args)
         {
 
-            string name = "a";
+            Console.Write("First name -> ");
 
+            string fname = Console.ReadLine();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-#Challenge 39
-import random
-import sympy
-def Game_10Q():
-  flag = False
-  score = 0
-  qNum = 0
-  while flag == False:
-    qNum += 1
-    operators = ["+", "*", "-"]
-    num1 = random.randint(1, 101)
-    num2 = random.randint(1, 101)
-    operator = random.randint(0, 2)
-    question = f"{num1} {operators[operator]} {num2}"
-    print(question)
-    ans = sympy.sympify(question)
-    userAnswer = int(input("Your answer: "))
-    if userAnswer == ans:
-      score += 1
-    else:
-      score += 0
-    if qNum == 10:
-      print(f"Your sore out of 10 was {score}")
-      flag = True
-
-  user_score = {
-                f"{name}":f"{score}"
-  }
-            file = open("Text.txt", "w")
-  file.writelines(f"{user_score}")
-  file.close()
-
-
-
-
-
-
-
-
-name = input("Enter your name: ")
-print(f"Welcome {name}, to the quiz here is the first question")
-Game_10Q()
-*/
-
-
-
+            Console.Write("Second name -> ");
             
+            string lname = Console.ReadLine();
+
+            Console.Write("Class -> ");
+            
+            string room = Console.ReadLine();
+
+            Console.Write("Questions -> ");
+
+            int questions = 0;
+            int timeout = 4;
+            bool accepted = true;
+            int attempts = 0;
+            bool TO = false;
+            do
+            {
+                attempts++;
+                try
+                {
+                    accepted = true;
+                    questions = int.Parse(Console.ReadLine());
+                }
+                catch
+                {
+                    accepted = false;
+                    Console.BackgroundColor = ConsoleColor.Red;
+                    Console.Write("Value needs to be of intiger value -> ");
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    if (attempts == timeout)
+                    {
+                        TO = true;
+                    }
+                }
+            } while (accepted == false && TO == false);
+
+            if (TO==true)
+            {
+                Console.BackgroundColor = ConsoleColor.Red;
+                Console.WriteLine("failed to enter correct input");
+                Console.BackgroundColor = ConsoleColor.Black;
+            }
+            else
+            {
+                Quiz(fname, lname, room, questions);
+            }
+            Console.ReadKey();
 
         }
     }

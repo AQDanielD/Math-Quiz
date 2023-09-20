@@ -14,13 +14,13 @@ namespace Math_Quiz
     {
 
 
-        public void test(int length)
+        public int test(string fname,string lname, string room,int length)
         {
-            FileStream Scores = new FileStream("C:\\Users\\AQ232596\\source\\repos\\Math Quiz\\Scores.txt", FileMode.Append, FileAccess.Write);
+            FileStream fs = new FileStream("C:\\Users\\AQ232596\\source\\repos\\Math Quiz\\Scores.txt", FileMode.Append, FileAccess.Write);
             StreamWriter sw = new StreamWriter(Scores);
 
-
-            for (int i = 0; i == length; i++)
+            int total = 0;
+            for (int i = 1; i == length; i++)
             {
                 string[] operators = { "+", "-", "*" };
                 Random rand = new Random();
@@ -41,12 +41,39 @@ namespace Math_Quiz
                         answer = num1 * num2;
                         break;
                 }
-
+                int input = int.Parse(Console.ReadLine());
+                if (answer == input)
+                {
+                    total++;
+                }
 
             }
+            return total;
         }
         static void Main(string[] args)
         {
+
+            string name = "a";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*
 #Challenge 39
 import random

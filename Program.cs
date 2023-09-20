@@ -23,7 +23,7 @@ namespace Math_Quiz
 
         static public void Quiz(string fname,string lname, string room,int length)
         {
-            FileStream fs = new FileStream("Scores.txt", FileMode.Append, FileAccess.Write);
+            FileStream fs = new FileStream("AQDanielD/Math-Quiz/Scores.txt", FileMode.Append, FileAccess.Write);
             StreamWriter sw = new StreamWriter(fs);
 
             Student student = new Student();
